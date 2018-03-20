@@ -4,126 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-
-
-
-public class Perceptron : MonoBehaviour
-{
-    public float[] featureVector;
-    public float[] weights;
-    public int featureVectorLength;
-    public float bias; 
-
-
-
-
-    public float sigmoid(float num)    {
-        const float e = 2.71828182845904523536f;
-        return 1.0f / (1.0f + Mathf.Pow(e, -num));
-    }
-
-   public Perceptron(int featureVectorSize)    { // basic constructor 
-        weights = new float[featureVectorSize];
-        featureVectorLength = featureVectorSize;
-        featureVector = new float[featureVectorLength]; 
-        for ( int i = 0; i < featureVectorSize; ++i)  {
-            weights[i] = 0.0f;
-        }
-    }
-
-    Perceptron(Perceptron parent)    { //copy constructor
-        featureVectorLength = parent.featureVectorLength;
-
-        for (int i =0; i < featureVectorLength; i++)        { 
-            featureVector[i] = parent.featureVector[i];
-            weights[i] = parent.weights[i];
-        }
-        bias = parent.bias; 
-    }
-
-    public void RandomizeValues()    {   
-        for (int i = 0; i < featureVector.Length; i++)  {
-            weights[i] = Random.Range(-2.0f, 2.0f); 
-        }
-        bias = Random.Range(-2.0f, 2.0f);
-    }
-
-    public Perceptron Crossover(Perceptron parent1, Perceptron parent2)    {
-        Perceptron result;
-        result = new Perceptron(parent1.featureVector.Length);
-        for ( int i = 0; i < result.featureVector.Length; ++i)        {
-            result.weights[i] = (parent1.weights[i] + parent2.weights[i]) / 2.0f;
-        }
-
-        result.bias = (parent1.bias + parent2.bias) / 2.0f;
-
-        return result; 
-    }
-
-    public float Evaluate(float fvect)    {      
-
-        float result = 0.0f;
-        for ( int i = 0; i < featureVector.Length; ++i)
-        {
-            result += featureVector[i] * weights[i];
-        }
-
-        result += bias;
-
-        return sigmoid(result);
-        
-    }
-
-}
-
-
-
-
-public class GameAI : MonoBehaviour
-{
-    Perceptron[] percivals; 
-    float[] featureVector; 
-
-
-    public GameAI()    {
-        // 5 because 4 of them check the surounding tiles to see if it is safe and the final one is the direction too food
-        percivals = new Perceptron[4];
-        featureVector = new float[5];
-        /*
-        percivals[0] = new Perceptron(5); // turn down 
-        percivals[1] = new Perceptron(5); // turn up
-        percivals[2] = new Perceptron(5); // turn left 
-        percivals[3] = new Perceptron(5); // turn right 
-        */
-        
-
-
-
-    }
-    public void updateFeatureVector()    {
-        // first check around it to see what is safe and what isn't 
-
-
-        // load that into the feature vector 
-
-        // for loop, pass them to perceptrons
-
-    }
-
-    public void makeDecision()    {
-        //update the feature vector 
-
-        // retrive result from perceptrons 
-
-        // execute the one with the highest likelyhood 
-
-    }
-
-
-
-}
-
-
 public class GameController : MonoBehaviour
 {
     public int maxSize;
@@ -142,6 +22,8 @@ public class GameController : MonoBehaviour
     public Snake tail;
     public int direction;
     public Vector2 nextPosition;
+
+    public GameAI Ai;
 
 
     void OnEnable()
@@ -186,6 +68,9 @@ public class GameController : MonoBehaviour
     {
         GameObject temp;
         nextPosition = head.transform.position;
+
+        Ai.UpdateFeatureVector(nextPosition);
+
 
         //Switch between 4 position - up/right/down/left
         switch(direction)
