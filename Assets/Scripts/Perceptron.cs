@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Perceptron : MonoBehaviour
 {
-    private float[] featureVector;
+    public float[] featureVector;
     private float[] weights;
     private int featureVectorLength;
     private float bias;
@@ -15,6 +15,27 @@ public class Perceptron : MonoBehaviour
         return 1.0f / (1.0f + Mathf.Pow(e, -num));
     }
 
+    public void Initialize(int featureVectorSize)
+    { // basic constructor 
+        weights = new float[featureVectorSize];
+        featureVectorLength = featureVectorSize;
+        featureVector = new float[featureVectorLength];
+        for (int i = 0; i < featureVectorSize; ++i)
+        {
+            weights[i] = 0.5f;
+        }
+    }
+
+    public Perceptron()
+    { // basic constructor 
+        weights = new float[4];
+        featureVectorLength = 4;
+        featureVector = new float[featureVectorLength];
+        for (int i = 0; i < 4; ++i)
+        {
+            weights[i] = 0.5f;
+        }
+    }
     public Perceptron(int featureVectorSize)
     { // basic constructor 
         weights = new float[featureVectorSize];
@@ -22,7 +43,7 @@ public class Perceptron : MonoBehaviour
         featureVector = new float[featureVectorLength];
         for (int i = 0; i < featureVectorSize; ++i)
         {
-            weights[i] = 0.0f;
+            weights[i] = 0.5f;
         }
     }
 

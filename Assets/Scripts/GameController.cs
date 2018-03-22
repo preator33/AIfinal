@@ -35,6 +35,8 @@ public class GameController : MonoBehaviour
     void Start ()
     {
         InvokeRepeating("TimerInvoke", 0, 0.1f); //Repeat every 0.5s
+        Ai = new GameAI();
+        Ai.Initialize();
         FoodFunction();
     }
 
@@ -69,8 +71,9 @@ public class GameController : MonoBehaviour
         GameObject temp;
         nextPosition = head.transform.position;
 
-        Ai.UpdateFeatureVector(nextPosition);
-
+       
+        Vector3 foodLocation = foodPrefab.transform.position;
+        Ai.UpdateFeatureVector(nextPosition, foodLocation);
 
         //Switch between 4 position - up/right/down/left
         switch(direction)
